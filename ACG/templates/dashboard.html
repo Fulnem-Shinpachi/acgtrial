@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - PNP ACG</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="dashboard-body">
+   
+  <div class="dashboard-container">
+    <div class="container">
+<div class="logo">Welcome, {{ username }}</div>
+      <h2>HELLO CYBER WORLD!</h2>
+
+       <img class="bgimg1" src="{{ url_for('static', filename='images/dashboard-bg.gif') }}" alt="bgimg">
+
+      <!-- Upload Form -->
+      <h3>Upload a File</h3>
+      <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Upload</button>
+      </form>
+
+      <!-- Search Bar -->
+      <div style="margin: 1rem 0;">
+        <input type="text" id="searchInput" placeholder="Search by filename..." style="padding: 8px; width: 40%; border: 1px solid #ccc; border-radius: 4px;">
+        <select id="filterType" style="padding: 8px; margin-left: 10px; border: 1px solid #ccc; border-radius: 4px;">
+          <option value="">All file types</option>
+          <option value=".jpg,.jpeg,.png,.gif">Images</option>
+          <option value=".mp4">Videos</option>
+          <option value=".pdf">PDFs</option>
+          <option value=".doc,.docx">Word</option>
+          <option value=".ppt,.pptx">PowerPoint</option>
+          <option value=".xls,.xlsx">Excel</option>
+          <option value=".txt">Text Files</option>
+        </select>
+      </div>
+
+      <!-- File Table -->
+      <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+  <thead>
+    <tr>
+      <th>Filename</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for file in files %}
+    <tr>
+      <td>{{ file.filename }}</td>
+      <td>
+        <a href="{{ url_for('download_file', filename=file.filename) }}">Download</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+      <!-- Logout button -->
+      <a href="{{ url_for('logout') }}">
+        <button style="margin-top: 1rem;">Logout</button>
+      </a>
+
+    </div> <!-- ✅ Closing the white box -->
+
+  </div> <!-- ✅ Closing the dashboard-container -->
+
+  <!-- Footer (outside the box) -->
+  <div class="shadow">
+    <p>2025 © PNP - ACG.</p>
+  </div>
+
+  <!-- JS: Search + Filter -->
+  <script>
+    document.getElementById('searchInput').addEventListener('keyup', filterTable);
+    document.getElementById('filterType').addEventListener('change', filterTable);
+
+    function filterTable() {
+      const searchValue = document.getElementById('searchInput').value.toLowerCase();
+      const filterType = document.getElementById('filterType').value.split(',');
+      const tableRows = document.querySelectorAll("table tbody tr");
+
+      tableRows.forEach(row => {
+        const filenameCell = row.querySelector("td:first-child");
+        if (!filenameCell) return;
+
+        const filename = filenameCell.textContent.toLowerCase();
+        const isMatchSearch = filename.includes(searchValue);
+        const isMatchType = !filterType[0] || filterType.some(ext => filename.endsWith(ext.trim()));
+
+        row.style.display = (isMatchSearch && isMatchType) ? '' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>
