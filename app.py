@@ -1,3 +1,4 @@
+from flask import Flask, render_template, session
 from flask import Flask, render_template, request, redirect, url_for, session, send_from_directory
 import os, json
 from flask import send_from_directory
@@ -36,6 +37,22 @@ def allowed_file(filename):
 
 
 # ===================== Routes =====================
+@app.route('/admin')
+def admin_page():
+    # 🛑 Only YOU (admin) can see this page
+    if 'username' not in session or session['username'] != 'admin':
+        return "Access denied", 403
+
+    # ✅ All files by all users
+    all_files = []
+    for user, files in user_upload_data.items():
+        for file in files:
+            all_files.append({
+                "username": user,
+                "filename": file
+            })
+
+    return render_template('admin.html', all_files=all_files)
 
 @app.route('/')
 def home():
