@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PNP ACG Sign Up</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="top-content">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo-image">
+    <div class="logo1">PNP <span>ANTI-CYBERCRIME GROUP</span></div>
+  </div>
+
+  <div class="login-card container {% if error %}error-style{% endif %}">
+    <h1>Create Account</h1>
+    {% if error %}
+      <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <form method="POST">
+      <input type="text" name="username" placeholder="Choose a username" required>
+      <input type="password" name="password" placeholder="Create a password" required>
+      <button type="submit">SIGN UP</button>
+    </form>
+    <a href="{{ url_for('login') }}">
+      <button class="btn-tutorial">BACK TO LOGIN</button>
+    </a>
+  </div>
+</body>
+</html>
