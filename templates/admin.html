@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin File Viewer</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f3f7fb;
+            padding: 40px;
+        }
+        h1 {
+            color: #2d5d89;
+        }
+        table {
+            width: 70%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background: #2d5d89;
+            color: white;
+        }
+        a {
+            color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+    <h1>🛡️ Admin Uploads Dashboard</h1>
+
+    {% if all_files %}
+    <table>
+        <tr>
+            <th>User</th>
+            <th>File</th>
+            <th>Download</th>
+        </tr>
+        {% for item in all_files %}
+        <tr>
+            <td>{{ item.username }}</td>
+            <td>{{ item.filename }}</td>
+            <td><a href="{{ url_for('uploaded_file', filename=item.filename) }}" target="_blank">View/Download</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>No uploaded files found.</p>
+    {% endif %}
+</body>
+</html>
