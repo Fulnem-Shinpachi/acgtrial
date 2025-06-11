@@ -2,4 +2,3 @@ Flask
 gunicorn
 Werkzeug
 itsdangerous
-Flask-Session
